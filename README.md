@@ -11,6 +11,7 @@ The repository documented the code for implementing the attention-based bidirect
 ## System Requirements
 - Linux
 - Miniconda >= 4.8.3
+- MATLAB ([tightplot.m function](https://www.mathworks.com/matlabcentral/fileexchange/27991-tight_subplot-nh-nw-gap-marg_h-marg_w))
 - Python 3.10.2. 
 - Tensorflow 2.7.0.
 - CUDA 11.7
