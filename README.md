@@ -32,3 +32,51 @@ Part of the WFCI data used in this paper is available on PhysioNet. To note, If 
   year={2021}
 }
 ```
+## Code structure
+```
+└── Scripts
+    ├── AtlasandIsbrain.mat
+    ├── AttentionLayer.py
+    ├── create_tfrecords_over_10s.py
+    ├── create_tfrecords.py
+    ├── dataloader_sleep_tfrecords_local.py
+    ├── gradcam.py
+    ├── main.py
+    ├── model_dau_nores.py
+    ├── mouse_split.json
+    ├── train_tfrecords.sh
+    ├── utils.py
+    └── visualize_lstm_attention_weights.py
+├── Results
+    ├── fragmented_sleep.m
+    ├── overlay_heatmap_gradcam.m
+    ├── plot_gradcam.m
+    ├── plot_hypnogram.m
+    ├── plot_scoring_length.m
+    ├── tight_subplot.m
+    └── visualize_attention_weights.m
+```
+#### In the `Scripts` folder, these are mainly the scripts for training and testing of the bidirectional LSTM model. 
+- `main.py`: the main python script to launch the network training, validation, testing, computing the Grad-CAM and extracting the temporal attention weights by defining the parameter `mode` in the config file `train_tfrecords.sh`.
+- `create_tfrecords*.py`: data preprocessing code to create tfrecords from continuous WFCI recordings. When the requested epoch lenghth is large than 10 second, the code takes additional frames in the adjacent epochs to compose the final epoch, eg., take adjacent 5-second in the epoch N-1 and epoch N+1 to compose a 20-second length for epoch N. 
+- `model_attention_bilstm.py`: code for building the hybrid attention-based bi-lstm model.
+- `AttentionLayer.py`: TensorFlow wrapper functions for building various type of attention module, including the LSTM attention, the spatial [SimAM](http://proceedings.mlr.press/v139/yang21o.html) and [CBAM](https://doi.org/10.48550/arXiv.1807.06521) module. 
+- `gradcam.py`: code to compute the [Grad-CAM](https://doi.org/10.48550/arXiv.1610.02391) heatmaps.
+- `visualize_lstm_attention_weights.py`: code to visualize learned attention scores of each time steps in a given 10-s input.
+- `mouse_split.json`: config file to define the train/validation/test split.
+#### In the `Results` folder, these are mainly the MATLAB codes to analyze the sleep scoring results.
+- 'plot_hypnogram.m': cpde to ploy color-coded hypnogram.
+- `plot_gradcam.m`: overlay Grad-CAM heatmap on a selected frame with the help of function `overlay_heatmap_gradcam.m`.
+- `fragmented_sleep.m`: code to calculate the number of sleep transitions and the average length in each of the sleep states.
+- `visualize_attention_weights.m`: visualize the color-coded attention weights.
+## Running the Code
+- The main setup for running the code is running:
+```
+./train_tfrecords.sh
+```
+by setting the `mode` as `train` for training the network, `gradcam` for generating the Grad-CAM heatmap for given inputs and `attention_weights` for extacting the temporal attention scores.
+## Citations
+If you use our codes to investigating the functional brain network in WFCI, and/or the example data in your research, the authors of this software would like you to cite our paper and/or conference proceedings in your related publications.
+```
+TBD
+```
