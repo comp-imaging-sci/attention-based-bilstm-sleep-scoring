@@ -21,3 +21,13 @@ The conda environment including all necessaray packages can be created using fil
 ```
 conda env create --file environment.yml
 ```
+## Dataset
+Part of the WFCI data used in this paper is available on PhysioNet. To note, If you're using our data, please cite:
+```
+@article{landsness2021wide,
+  title={Wide-field calcium imaging sleep state database},
+  author={Landsness, Eric and Zhang, Xiaohui and Chen, Wei and Miao, Hanyang and Tang, Michelle and Brier, Lindsey and Anastasio, Mark and Lee, Jin-Moo and Culver, Joseph},
+  journal={PhysioNet},
+  year={2021}
+}
+```
