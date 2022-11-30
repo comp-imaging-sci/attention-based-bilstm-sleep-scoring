@@ -39,10 +39,10 @@ Part of the WFCI data used in this paper is available on PhysioNet. To note, If 
     ├── AttentionLayer.py
     ├── create_tfrecords_over_10s.py
     ├── create_tfrecords.py
-    ├── dataloader_sleep_tfrecords_local.py
+    ├── dataloader_sleep.py
     ├── gradcam.py
     ├── main.py
-    ├── model_dau_nores.py
+    ├── model_attention_bilstm.py
     ├── mouse_split.json
     ├── train_tfrecords.sh
     ├── utils.py
@@ -59,6 +59,7 @@ Part of the WFCI data used in this paper is available on PhysioNet. To note, If 
 #### In the `Scripts` folder, these are mainly the scripts for training and testing of the bidirectional LSTM model. 
 - `main.py`: the main python script to launch the network training, validation, testing, computing the Grad-CAM and extracting the temporal attention weights by defining the parameter `mode` in the config file `train_tfrecords.sh`.
 - `create_tfrecords*.py`: data preprocessing code to create tfrecords from continuous WFCI recordings. When the requested epoch lenghth is large than 10 second, the code takes additional frames in the adjacent epochs to compose the final epoch, eg., take adjacent 5-second in the epoch N-1 and epoch N+1 to compose a 20-second length for epoch N. 
+- `dataloader_sleep.py`: the dataloader to create tf.dataset object for network input, need to be modified accordingly.
 - `model_attention_bilstm.py`: code for building the hybrid attention-based bi-lstm model.
 - `AttentionLayer.py`: TensorFlow wrapper functions for building various type of attention module, including the LSTM attention, the spatial [SimAM](http://proceedings.mlr.press/v139/yang21o.html) and [CBAM](https://doi.org/10.48550/arXiv.1807.06521) module. 
 - `gradcam.py`: code to compute the [Grad-CAM](https://doi.org/10.48550/arXiv.1610.02391) heatmaps.
