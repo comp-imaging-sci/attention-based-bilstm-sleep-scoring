@@ -66,7 +66,7 @@ Part of the WFCI data used in this paper is available on PhysioNet. To note, If 
 - `visualize_lstm_attention_weights.py`: code to visualize learned attention scores of each time steps in a given 10-s input.
 - `mouse_split.json`: config file to define the train/validation/test split.
 #### In the `Results` folder, these are mainly the MATLAB codes to analyze the sleep scoring results.
-- 'plot_hypnogram.m': cpde to ploy color-coded hypnogram.
+- `plot_hypnogram.m`: cpde to ploy color-coded hypnogram.
 - `plot_gradcam.m`: overlay Grad-CAM heatmap on a selected frame with the help of function `overlay_heatmap_gradcam.m`.
 - `fragmented_sleep.m`: code to calculate the number of sleep transitions and the average length in each of the sleep states.
 - `visualize_attention_weights.m`: visualize the color-coded attention weights.
