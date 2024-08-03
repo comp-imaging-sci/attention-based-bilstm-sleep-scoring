@@ -34,7 +34,7 @@ class dataloader_sleep_tfrecords:
 
     def load_data(self):
         # speficy the data split by keeping an independent mouse
-        with open("mouse_split_ben.json", 'r') as file:
+        with open("mouse_split.json", 'r') as file:
             mouse_list = json.load(file)
                
         self.project.params.mouse_list = mouse_list
@@ -53,8 +53,8 @@ class dataloader_sleep_tfrecords:
         
         print(len(train_fnames), len(val_fnames), len(test_fnames))
         
-        train_dataset = self.load_dataset(train_fnames, reshuffle_each_iteration=True)
-        val_dataset = self.load_dataset(val_fnames, reshuffle_each_iteration=False)
+        train_dataset = self.load_dataset(train_fnames[:50], reshuffle_each_iteration=True)
+        val_dataset = self.load_dataset(val_fnames[:10], reshuffle_each_iteration=False)
         test_dataset = self.load_dataset(test_fnames, reshuffle_each_iteration=False)
         
         #for x, y in val_dataset:

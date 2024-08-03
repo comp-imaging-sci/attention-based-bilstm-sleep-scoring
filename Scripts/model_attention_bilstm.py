@@ -19,11 +19,9 @@ from sklearn.metrics import classification_report
 import matplotlib.pyplot as plt
 
 from AttentionLayer import CustomAttentionTF, LSTMAttentionLayer, SimAM, ChannelAttention, SpatialAttention
-from PolyLoss import poly1_cross_entropy, poly1_focal_cross_entropy
 from gradcam import gradcam, gradcam_plus
 from visualize_lstm_attention_weights import visualize_lstm_attention_weights
 from utils import calculate_metrics
-#mixed_precision.set_global_policy('mixed_float16')
 
 def add_arguments(parser):
     parser.add_argument('--num_epochs', type=int, default=200, help='number of training epochs')
@@ -59,13 +57,6 @@ class model:
         elif self.project.params.loss == "cross_entropy":
             self.loss = 'sparse_categorical_crossentropy'
             print("Using categorical cross entropy loss...\n")
-        #elif self.project.params.loss == "polyfocal":
-        #    self.loss = poly1_focal_cross_entropy
-        #    print("Using poly1 focal loss...\n")
-        #elif self.project.params.loss == "poly":
-        #    self.loss = poly1_cross_entropy
-        #    print("Using poly cross entropy loss")
-
     
     def conv_block(self, x, num_filters=None, kernel_size=None, strides=None):
         
@@ -73,10 +64,7 @@ class model:
         outputs = TimeDistributed(LeakyReLU())(outputs)
         outputs = TimeDistributed(Conv2D(filters=num_filters, kernel_size=kernel_size, strides=strides, padding='same'))(outputs)
         outputs = TimeDistributed(LeakyReLU())(outputs)
-        #outputs = TimeDistributed(SimAM(lambd=1e-4))(outputs)
-        #outputs = TimeDistributed(ChannelAttention(ratio=8))(outputs) 
-        #outputs = TimeDistributed(SpatialAttention(kernel_size=7))(outputs)
-        
+       
         return outputs
  
     def cnnlstm(self):
@@ -102,15 +90,9 @@ class model:
         state_h = Concatenate()([forward_h, backward_h])
         context_vector, attention_weights = LSTMAttentionLayer(2*self.project.params.num_rnn_units)(lstm, state_h)
         
-        #context_vector = Bidirectional(LSTM(self.project.params.num_rnn_units))(x)
-
         context_vector = Flatten()(context_vector)
         context_vector = Dropout(0.2)(context_vector) #previous 0.2
         
-        #if "poly" in self.project.params.loss:
-        #    logits = Dense(self.project.params.num_classes)(context_vector) #activation='softmax')(context_vector)
-        #    print("No pre softmax")
-        #else:
         if self.project.params.num_classes == 2:
             logits = Dense(1, activation='sigmoid')(context_vector)
         else:
@@ -197,13 +179,6 @@ class model:
                 'y_preds': y_preds,
                 'y_scores': y_scores
                 }
-        #m = tf.keras.metrics.Accuracy()
-        #m.update_state(y_trues, y_preds)
-        #print(m.result().numpy())
-        #
-        #n = tfa.metrics.CohenKappa(num_classes=3, sparse_labels=True)
-        #n.update_state(y_trues, y_preds)
-        #print(n.result().numpy())
 
         if self.project.params.mode == 'test_subjectwise':
             #sio.savemat(os.path.join('../Results/', "200813_10s.mat"), results)
